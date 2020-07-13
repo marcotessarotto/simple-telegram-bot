@@ -83,7 +83,7 @@ def main():
     token_file = Path('token.txt')
 
     token = os.environ.get('TOKEN') or open(token_file).read().strip()
-
+    # None (simile a null in Java)
     print(f"len(token) = {len(token)}")
 
     # @user2837467823642_bot
