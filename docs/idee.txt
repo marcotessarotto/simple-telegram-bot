@@ -1,0 +1,24 @@
+uso di un database
+definizione di tabelle
+integrazione con django (CMS)
+
+elaborazione delle frasi libere
+
+
+provare a scrivere un bot semplificato
+che possa interrogare un semplice database
+
+possiamo definire una tabella di hotel
+dove per ogni hotel definiamo degli attributi
+es. numero di stanza vuote
+
+e possiamo definire dei comandi per chiedere al bot
+quali hotel sono liberi e quindi prenotare una stanza
+
+
+***
+l'utente dà il comando /info
+quindi il bot chiede all'utente: nome, cognome, età
+in questa sequenza.
+
+
