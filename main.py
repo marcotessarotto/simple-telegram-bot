@@ -68,6 +68,17 @@ def get_time_command_handler(update, context):
 def info_command_handler(update, context):
     print("info_command_handler")
 
+    user_id = update.effective_user.id
+
+    # voglio controllare se user_id è una chiave di user_dictionary
+
+    if user_id in user_dictionary:
+        update.message.reply_text(
+            f'ti ho già chiesto le informazioni che sono: { user_dictionary[user_id] }'
+        )
+        return ConversationHandler.END
+
+
     update.message.reply_text(
         f'ok, ora ti chiederò il nome:'
     )
@@ -77,7 +88,8 @@ def info_command_handler(update, context):
 
 class TelegramUser:
 
-    pass
+    def __str__(self):
+        return 'TelegramUser: name=' + self.name + ', surname=' + self.surname + ', age=' + self.age
 
 
 def callback_name(update, context):
