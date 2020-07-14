@@ -12,6 +12,7 @@ from telegram.utils.request import Request
 
 UI_HELP_COMMAND = 'help'
 
+CALLBACK_NAME, CALLBACK_SURNAME, CALLBACK_AGE = range(3)
 
 def help_command_handler(update, context):
     """ Show available bot commands"""
@@ -60,6 +61,58 @@ def get_time_command_handler(update, context):
     update.message.reply_text(
         f"l'ora corrente è {d}"
     )
+
+
+def info_command_handler(update, context):
+    print("info_command_handler")
+
+    update.message.reply_text(
+        f'ok, ora ti chiederò il nome:'
+    )
+
+    return CALLBACK_NAME
+
+
+def callback_name(update, context):
+    name = update.message.text
+
+    print(f"name = {name}")
+
+    update.message.reply_text(
+        text='grazie, ora dimmi il tuo cognome:'
+    )
+
+    return CALLBACK_SURNAME
+
+
+def callback_surname(update, context):
+    surname = update.message.text
+
+    print(f"surname = {surname}")
+
+    update.message.reply_text(
+        text='grazie, ora dammi la tua età:'
+    )
+
+    return CALLBACK_AGE
+
+
+def callback_age(update, context):
+    age = update.message.text
+
+    print(f"name = {age}")
+
+    update.message.reply_text(
+        text='grazie, finito!'
+    )
+
+    return ConversationHandler.END
+
+
+def fallback_conversation_handler(update, context):
+    text = update.message.text
+    print(f'fallback_conversation_handler {text}')
+    return ConversationHandler.END
 
 
 class MQBot(Bot):
@@ -113,6 +166,7 @@ class MQBot(Bot):
             e = error
 
 
+
 def main():
     print("starting bot...")
 
@@ -140,6 +194,22 @@ def main():
 
     job_queue = updater.job_queue
     # *** boilerplate end
+
+    conv_handler = ConversationHandler(
+        entry_points=[
+            CommandHandler('info', info_command_handler),
+        ],
+        states={
+            CALLBACK_NAME: [MessageHandler(Filters.text, callback_name)],
+            CALLBACK_SURNAME: [MessageHandler(Filters.text, callback_surname)],
+            CALLBACK_AGE: [MessageHandler(Filters.text, callback_age)],
+        },
+        fallbacks=[
+            MessageHandler(Filters.all, fallback_conversation_handler)
+        ]
+    )
+
+    dp.add_handler(conv_handler)
 
     dp.add_handler(CommandHandler('start', start_command_handler))
     dp.add_handler(CommandHandler('help', help_command_handler))
