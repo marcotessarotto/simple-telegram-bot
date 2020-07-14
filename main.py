@@ -79,6 +79,7 @@ class MQBot(Bot):
 def main():
     print("starting bot...")
 
+    # *** boilerplate start
     from pathlib import Path
     token_file = Path('token.txt')
 
@@ -101,9 +102,11 @@ def main():
     dp = updater.dispatcher
 
     job_queue = updater.job_queue
+    # *** boilerplate end
 
     dp.add_handler(CommandHandler(UI_HELP_COMMAND, help_command_handler))
 
+    # *** boilerplate start
     # start updater
     updater.start_polling()
 
@@ -122,6 +125,7 @@ def main():
     # https://stackoverflow.com/a/40525942/974287
     print("before os._exit")
     os._exit(0)
+    # *** boilerplate end
 
 
 if __name__ == '__main__':
