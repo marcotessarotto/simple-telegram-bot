@@ -100,7 +100,7 @@ def callback_surname(update, context):
 def callback_age(update, context):
     age = update.message.text
 
-    print(f"name = {age}")
+    print(f"age = {age}")
 
     update.message.reply_text(
         text='grazie, finito!'
