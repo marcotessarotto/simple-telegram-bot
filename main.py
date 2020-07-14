@@ -1,3 +1,4 @@
+import datetime
 import os
 
 from telegram import Bot
@@ -18,10 +19,46 @@ def help_command_handler(update, context):
     print("help_command_handler")
     print(update)
 
+    try:
+        first_name = update.message.chat.first_name
+    except AttributeError:
+        print("eccezione AttributeError")
+        first_name = "-"
+
+
+    print(f"first_name = {first_name}")
+
+
     update.message.reply_text(
-        "ciao! questo è l'help del bot",
+        f"ciao {first_name}! questo è l'help del bot",
         disable_web_page_preview=True,
         parse_mode='HTML',
+    )
+
+
+def start_command_handler(update, context):
+    user_id = update.effective_user.id
+
+    print(f"start_command_handler user_id = {user_id}")
+
+    update.message.reply_text(
+        f'ciao {update.message.from_user.first_name}! '
+    )
+
+
+def generic_message_handler(update, context):
+    message_text = update.message.text
+
+    print(f"generic_message_handler - message_text = {message_text}")
+
+
+def get_time_command_handler(update, context):
+    # diamo all'utente l'ora corrente
+
+    d = datetime.datetime.now()
+
+    update.message.reply_text(
+        f"l'ora corrente è {d}"
     )
 
 
@@ -104,7 +141,12 @@ def main():
     job_queue = updater.job_queue
     # *** boilerplate end
 
-    dp.add_handler(CommandHandler(UI_HELP_COMMAND, help_command_handler))
+    dp.add_handler(CommandHandler('start', start_command_handler))
+    dp.add_handler(CommandHandler('help', help_command_handler))
+
+    dp.add_handler(CommandHandler('ora', get_time_command_handler))
+
+    dp.add_handler(MessageHandler(Filters.text, generic_message_handler))
 
     # *** boilerplate start
     # start updater
