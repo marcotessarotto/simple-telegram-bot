@@ -14,6 +14,8 @@ UI_HELP_COMMAND = 'help'
 
 CALLBACK_NAME, CALLBACK_SURNAME, CALLBACK_AGE = range(3)
 
+user_dictionary = {}
+
 def help_command_handler(update, context):
     """ Show available bot commands"""
 
@@ -73,10 +75,22 @@ def info_command_handler(update, context):
     return CALLBACK_NAME
 
 
+class TelegramUser:
+
+    pass
+
+
 def callback_name(update, context):
     name = update.message.text
 
     print(f"name = {name}")
+
+    user_id = update.effective_user.id
+
+    u = TelegramUser()
+
+    user_dictionary[user_id] = u
+    u.name = name
 
     update.message.reply_text(
         text='grazie, ora dimmi il tuo cognome:'
@@ -90,6 +104,11 @@ def callback_surname(update, context):
 
     print(f"surname = {surname}")
 
+    user_id = update.effective_user.id
+
+    u = user_dictionary[user_id]
+    u.surname = surname
+
     update.message.reply_text(
         text='grazie, ora dammi la tua età:'
     )
@@ -101,6 +120,13 @@ def callback_age(update, context):
     age = update.message.text
 
     print(f"age = {age}")
+
+    user_id = update.effective_user.id
+
+    u = user_dictionary[user_id]
+    u.age = age
+
+    print(u)
 
     update.message.reply_text(
         text='grazie, finito!'
