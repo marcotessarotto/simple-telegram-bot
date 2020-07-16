@@ -78,7 +78,6 @@ def info_command_handler(update, context):
         )
         return ConversationHandler.END
 
-
     update.message.reply_text(
         f'ok, ora ti chiederò il nome:'
     )
