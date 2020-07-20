@@ -1,6 +1,7 @@
 import datetime
 import os
 
+import telegram
 from telegram import Bot
 from telegram.ext import messagequeue as mq, Updater, ConversationHandler, CommandHandler, MessageHandler, Filters, \
     CallbackQueryHandler, run_async
@@ -54,15 +55,27 @@ def generic_message_handler(update, context):
 
     print(f"generic_message_handler - message_text = {message_text}")
 
+time_msg = None
+
 
 def get_time_command_handler(update, context):
     # diamo all'utente l'ora corrente
+    global time_msg
 
     d = datetime.datetime.now()
 
-    update.message.reply_text(
-        f"l'ora corrente è {d}"
-    )
+    if time_msg:
+        time_msg.edit_text(
+            text=f"***l'ora corrente è {d}"
+        )
+    else:
+        promise = update.message.reply_text(
+            text=f"l'ora corrente è {d}"
+        )
+
+        time_msg = promise.result()
+
+    print(time_msg)
 
 
 def info_command_handler(update, context):
